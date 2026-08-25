@@ -15,7 +15,7 @@ namespace QuickKart.Controllers
         [HttpPost("signup")]
         public IActionResult SignUp()
         {
-            return Unauthorized();
+            return Ok();
         }
     }
 }
