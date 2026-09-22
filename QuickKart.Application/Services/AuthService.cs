@@ -10,11 +10,13 @@ namespace QuickKart.Application.Services
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IJwtService _jwtService;
         private readonly IPasswordHasher<User> _passwordHasher;
-        public AuthService(IUserRepository userRepository, IPasswordHasher<User> passwordHasher)
+        public AuthService(IUserRepository userRepository, IPasswordHasher<User> passwordHasher, IJwtService jwtService)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
+            _jwtService = jwtService;
         }
         public async Task RegisterAsync(RegisterRequest request)
         {
@@ -51,15 +53,8 @@ namespace QuickKart.Application.Services
             await _userRepository.AddUserAsync(user);
             await _userRepository.SaveAsync();
         }
-
-        public async Task<User?> GetUserByEmail(string email)
-        {
-            var normalLizeEmail = email.Trim().ToLowerInvariant();
-            var existingUser = await _userRepository.GetUserByEmail(normalLizeEmail);
-            return existingUser;
-        }
-
-        public async Task<LoginResponse?> LoginAsync(LoginRequest request)
+        
+        public async Task<LoginResult> LoginAsync(LoginRequest request)
         {
             var email = request.Email.Trim().ToLowerInvariant();
             var user = await _userRepository.GetUserByEmail(email) ?? throw new UserNotFoundException("The email is not exist. Please check the email and try again");
@@ -68,11 +63,14 @@ namespace QuickKart.Application.Services
             {
                 throw new UserNotFoundException("username or passowrd is not correct");
             }
-            return new LoginResponse
+            var token = _jwtService.GenerateToken(user.Id, user.Email, request.Role);
+            var roles = user.UserRoles.Select(x => x.Role.Name).ToList();
+            return new LoginResult
             {
                 UserId = user.Id,
-                Role = user.UserRoles,
+                Role = roles,
                 Email = user.Email,
+                AccessToken = token,
             };
         }
     }

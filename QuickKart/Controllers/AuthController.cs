@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using QuickKart.Application.DTOs;
 using QuickKart.Application.Exceptions.UserException;
 using QuickKart.Application.Interfaces;
@@ -17,7 +18,21 @@ namespace QuickKart.Controllers
         public async Task<IActionResult> Login(LoginRequest request)
         {
             var response = await _authService.LoginAsync(request);
-            return Ok(response);
+            Response.Cookies.Append(
+            "access_token",
+            response.AccessToken,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTimeOffset.UtcNow.AddMinutes(60)
+            });
+            return Ok(new LoginResponse
+            {
+                UserId = response.UserId,
+                Email = response.Email,
+            });
         }
 
         [HttpPost("signup")]
@@ -25,24 +40,6 @@ namespace QuickKart.Controllers
         {
             await _authService.RegisterAsync(request);
             return StatusCode(StatusCodes.Status201Created);
-        }
-
-        [HttpGet("getUserByEmail")]
-        public async Task<IActionResult> GetUserByEmail(string email)
-        {
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                return BadRequest("Please provide an email.");
-            }
-            var user = await _authService.GetUserByEmail(email) ?? throw new UserNotFoundException("User not found");
-            var userDto = new UserDto
-            {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Roles = user.UserRoles.Select(x=>x.RoleId)
-            };
-            return Ok(userDto);
         }
     }
 }

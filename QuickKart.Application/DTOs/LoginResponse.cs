@@ -7,14 +7,7 @@ namespace QuickKart.Application.DTOs
 {
     public class LoginResponse
     {
-        public string AccessToken { get; set; } = string.Empty;
-
-        public DateTime ExpiresAt { get; set; }
-
-        public Guid UserId { get; set; }
-
-        public string Email { get; set; } = string.Empty;
-
-        public ICollection<UserRoles> Role { get; set; } = null!;
+        public Guid UserId { get; init; }
+        public string Email { get; init; } = string.Empty;
     }
 }

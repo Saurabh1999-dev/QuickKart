@@ -6,5 +6,6 @@ namespace QuickKart.Application.Interfaces.Repository
         Task<User?> GetUserByEmail(string email);
         Task AddUserAsync(User user);
         Task SaveAsync();
+        Task<List<User>> Get();
     }
 }

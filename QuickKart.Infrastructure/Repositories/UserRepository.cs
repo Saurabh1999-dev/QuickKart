@@ -17,6 +17,10 @@ namespace QuickKart.Infrastructure.Repositories
         {
             return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
         }
+        public async Task<List<User>> Get()
+        {
+            return await _context.Users.ToListAsync();
+        }
 
         public async Task AddUserAsync(User user)
         {
