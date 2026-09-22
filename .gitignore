@@ -4,3 +4,6 @@
 /QuickKart/bin
 /QuickKart/obj
 /.vs
+/QuickKart.Application/bin
+/QuickKart.Domain/bin
+/QuickKart.Infrastructure/bin
