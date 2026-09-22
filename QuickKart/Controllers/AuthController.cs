@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using QuickKart.Application.DTOs;
+using QuickKart.Application.Exceptions.UserException;
 using QuickKart.Application.Interfaces;
-using QuickKart.Domain.Entities;
-
 namespace QuickKart.Controllers
 {
     [ApiController]
@@ -24,13 +23,8 @@ namespace QuickKart.Controllers
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp(RegisterRequest request)
         {
-            var response = await _authService.RegisterAsync(request);
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
+            await _authService.RegisterAsync(request);
+            return StatusCode(StatusCodes.Status201Created);
         }
 
         [HttpGet("getUserByEmail")]
@@ -38,14 +32,17 @@ namespace QuickKart.Controllers
         {
             if (string.IsNullOrWhiteSpace(email))
             {
-                return BadRequest("Email is required.");
+                return BadRequest("Please provide an email.");
             }
-            var user = await _authService.GetUserByEmail(email);
-            if (user == null)
+            var user = await _authService.GetUserByEmail(email) ?? throw new UserNotFoundException("User not found");
+            var userDto = new UserDto
             {
-                return NotFound();
-            }
-            return Ok(user);
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Roles = user.UserRoles.Select(x=>x.RoleId)
+            };
+            return Ok(userDto);
         }
     }
 }

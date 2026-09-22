@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuickKart.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,9 +15,6 @@ namespace QuickKart.Application.DTOs
 
         public string Email { get; set; } = string.Empty;
 
-        public string Role { get; set; } = string.Empty;
-
-        public bool Success { get; set; }
-        public string? Message {  get; set; }
+        public ICollection<UserRoles> Role { get; set; } = null!;
     }
 }
