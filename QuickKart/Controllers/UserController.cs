@@ -24,7 +24,7 @@ namespace QuickKart.API.Controllers
             return Ok(users);
         }
 
-        [Authorize(Roles = "Admin, User, Worker")]
+        //[Authorize(Roles = "Admin, User, Worker")]
         [HttpGet("getUserByEmail")]
         public async Task<IActionResult> GetUserByEmail(string email)
         {
@@ -38,7 +38,9 @@ namespace QuickKart.API.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                Roles = user.UserRoles.Select(x => x.RoleId)
+                Roles = user.UserRoles
+            .Select(x => x.Role.Name)
+            .ToList()
             };
             return Ok(userDto);
         }

@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="dockerfile" />
+  </Folder>
   <Project Path="QuickKart.Application/QuickKart.Application.csproj" />
   <Project Path="QuickKart.Domain/QuickKart.Domain.csproj" />
   <Project Path="QuickKart.Infrastructure/QuickKart.Infrastructure.csproj" />

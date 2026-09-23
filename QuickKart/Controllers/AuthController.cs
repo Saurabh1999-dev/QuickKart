@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using QuickKart.Application.DTOs;
-using QuickKart.Application.Exceptions.UserException;
 using QuickKart.Application.Interfaces;
-namespace QuickKart.Controllers
+namespace QuickKart.Api.Controllers
 {
     [ApiController]
     [Route("api/auth")]

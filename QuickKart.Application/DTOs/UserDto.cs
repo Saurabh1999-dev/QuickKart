@@ -1,4 +1,6 @@
-﻿namespace QuickKart.Application.DTOs
+﻿using QuickKart.Domain.Entities;
+
+namespace QuickKart.Application.DTOs
 {
     public class UserDto
     {
@@ -8,6 +10,6 @@
 
         public string Email { get; set; } = string.Empty;
 
-        public IEnumerable<int> Roles { get; set; } = null!;
+        public List<string> Roles { get; set; } = new();
     }
 }

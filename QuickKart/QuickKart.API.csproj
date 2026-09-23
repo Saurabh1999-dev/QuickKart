@@ -23,4 +23,9 @@
     <ProjectReference Include="..\QuickKart.Infrastructure\QuickKart.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Client\" />
+    <Folder Include="Controllers\Worker\" />
+  </ItemGroup>
+
 </Project>
