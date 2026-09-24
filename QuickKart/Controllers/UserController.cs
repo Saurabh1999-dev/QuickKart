@@ -37,10 +37,7 @@ namespace QuickKart.API.Controllers
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email = user.Email,
-                Roles = user.UserRoles
-            .Select(x => x.Role.Name)
-            .ToList()
+                Email = user.Email
             };
             return Ok(userDto);
         }

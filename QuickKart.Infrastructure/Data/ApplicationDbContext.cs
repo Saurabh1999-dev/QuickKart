@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuickKart.Domain.Entities;
+using QuickKart.Domain.Entities.Worker;
 using System.Data;
 
 namespace QuickKart.Infrastructure.Data
@@ -10,7 +11,7 @@ namespace QuickKart.Infrastructure.Data
         { }
         public DbSet<User> Users { get; set; }
         public DbSet<Roles> Roles { get; set; }
-        public DbSet<UserRoles> UserRoles { get; set; }
+        public DbSet<Worker> Workers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

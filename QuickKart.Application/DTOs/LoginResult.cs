@@ -2,14 +2,18 @@
 {
     public class LoginResult
     {
-        public Guid UserId { get; init; }
+        public Guid UserId { get; set; }
 
-        public string Email { get; init; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
 
-        public List<string> Role { get; init; } = [];
+        public string FirstName { get; init; } = string.Empty;
 
-        public string AccessToken { get; init; } = string.Empty;
+        public string LastName { get; init; } = string.Empty;
 
-        public DateTime ExpiresAt { get; init; }
+        public string Role { get; set; } = string.Empty;
+
+        public string AccessToken { get; set; } = string.Empty;
+
+        public DateTime ExpiresAt { get; set; }
     }
 }

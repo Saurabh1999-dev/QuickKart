@@ -24,12 +24,15 @@ namespace QuickKart.Api.Controllers
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
+                Path = "/",
                 Expires = DateTimeOffset.UtcNow.AddMinutes(60)
             });
             return Ok(new LoginResponse
             {
                 UserId = response.UserId,
                 Email = response.Email,
+                FirstName = response.FirstName,
+                LastName = response.LastName,
             });
         }
 
@@ -38,6 +41,30 @@ namespace QuickKart.Api.Controllers
         {
             await _authService.RegisterAsync(request);
             return StatusCode(StatusCodes.Status201Created);
+        }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete(
+       "access_token",
+       new CookieOptions
+       {
+           Path = "/"
+       });
+            return Ok(new
+            {
+                sucess = true,
+                message = "Logout successful"
+            });
+        }
+
+        //Seperate sign in for the worker
+        [HttpPost]
+        public async Task<IActionResult> WorkerSignUp(WorkerRegisterRequest request)
+        {
+            await _authService.RegisterWorkerAsync(request);
+            return Ok();
         }
     }
 }

@@ -38,22 +38,22 @@ namespace QuickKart.Application.Services
                 LastName = request.LastName,
                 Email = normalLizeEmail,
                 CreatedAt = DateTime.UtcNow,
+                RoleId = request.RoleId,
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, request.Password);
-            user.UserRoles.Add(new UserRoles
-            {
-                Id = Guid.NewGuid(),
-                RoleId = request.RoleId,
-                User = user,
-                UserId = user.Id,
-            });
+            //user.UserRoles.Add(new UserRoles
+            //{
+            //    Id = Guid.NewGuid(),
+            //    RoleId = request.RoleId,
+            //    User = user,
+            //    UserId = user.Id,
+            //});
 
 
             await _userRepository.AddUserAsync(user);
             await _userRepository.SaveAsync();
         }
-        
         public async Task<LoginResult> LoginAsync(LoginRequest request)
         {
             var email = request.Email.Trim().ToLowerInvariant();
@@ -63,15 +63,32 @@ namespace QuickKart.Application.Services
             {
                 throw new UserNotFoundException("username or passowrd is not correct");
             }
-            var token = _jwtService.GenerateToken(user.Id, user.Email, request.Role);
-            var roles = user.UserRoles.Select(x => x.Role.Name).ToList();
+            var token = _jwtService.GenerateToken(user.Id, user.Email, user.Role.Name);
+            var roles = user.Role.Name;
             return new LoginResult
             {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 UserId = user.Id,
                 Role = roles,
                 Email = user.Email,
                 AccessToken = token,
             };
+        }
+
+        // Seperate Sign in for the worker
+        public async Task RegisterWorkerAsync(WorkerRegisterRequest request)
+        {
+            if (request == null)
+            {
+                throw new Exception("Please enter all fields and try again");
+            }
+            var normalLizeEmail = request.Email.Trim().ToLowerInvariant();
+            var existingUser = await _userRepository.GetUserByEmail(normalLizeEmail);
+            if (existingUser != null)
+            {
+                throw new UserAlreadyExistsException(request.Email + "User already exist.");
+            }
         }
     }
 }

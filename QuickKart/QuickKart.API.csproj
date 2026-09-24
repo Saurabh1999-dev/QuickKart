@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Client\**" />
+    <Compile Remove="Controllers\Worker\**" />
+    <Content Remove="Controllers\Client\**" />
+    <Content Remove="Controllers\Worker\**" />
+    <EmbeddedResource Remove="Controllers\Client\**" />
+    <EmbeddedResource Remove="Controllers\Worker\**" />
+    <None Remove="Controllers\Client\**" />
+    <None Remove="Controllers\Worker\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11">
@@ -21,11 +32,6 @@
   <ItemGroup>
     <ProjectReference Include="..\QuickKart.Application\QuickKart.Application.csproj" />
     <ProjectReference Include="..\QuickKart.Infrastructure\QuickKart.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\Client\" />
-    <Folder Include="Controllers\Worker\" />
   </ItemGroup>
 
 </Project>

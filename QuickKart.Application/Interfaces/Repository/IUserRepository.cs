@@ -1,4 +1,5 @@
 ﻿using QuickKart.Domain.Entities;
+using QuickKart.Domain.Entities.Worker;
 namespace QuickKart.Application.Interfaces.Repository
 {
     public interface IUserRepository
@@ -7,5 +8,7 @@ namespace QuickKart.Application.Interfaces.Repository
         Task AddUserAsync(User user);
         Task SaveAsync();
         Task<List<User>> Get();
+        //Worker
+        Task<Worker?> GetWorkerByEmail(string email);
     }
 }
